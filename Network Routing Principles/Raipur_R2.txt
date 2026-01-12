@@ -1,0 +1,248 @@
+Building configuration...
+
+Current configuration : 1836 bytes
+!
+version 15.4
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Raipur_R2
+!
+!
+!
+!
+!
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 83.0.9.1 255.255.255.224
+!
+interface GigabitEthernet0/0/0
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface GigabitEthernet0/0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface GigabitEthernet0/0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Serial0/1/0
+ bandwidth 512
+ ip address 83.0.9.82 255.255.255.252
+ ip nat inside
+ clock rate 2000000
+!
+interface Serial0/1/1
+ ip address 201.45.38.1 255.255.255.252
+ ip nat outside
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ log-adjacency-changes
+ network 83.0.9.0 0.0.0.31 area 0
+ network 83.0.9.80 0.0.0.3 area 0
+ default-information originate
+!
+ip nat pool VLAN1 141.12.2.171 141.12.2.254 netmask 255.255.255.0
+ip nat pool VLANXXX 141.12.2.1 141.12.2.85 netmask 255.255.255.0
+ip nat pool VLANYYY 141.12.2.86 141.12.2.170 netmask 255.255.255.0
+ip nat inside source list ACLVLAN1 pool VLAN1
+ip nat inside source list ACLVLANXXX pool VLANXXX
+ip nat inside source list ACLVLANYYY pool VLANYYY
+ip classless
+ip route 0.0.0.0 0.0.0.0 Serial0/1/1 
+!
+ip flow-export version 9
+!
+!
+ip access-list standard TELNET_RAIPUR
+ deny 83.0.0.0 0.0.7.255
+ permit any
+ip access-list extended ACLVLAN386
+ permit ip 83.0.0.0 0.0.7.255 any
+ip access-list extended ACLVLAN868
+ permit ip 83.0.9.32 0.0.0.31 any
+ip access-list extended ACLVLAN1
+ permit ip 83.0.9.64 0.0.0.15 any
+!
+banner motd ^C ************
+*******Prajeet Sridhar 105338683*******^C
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ access-class TELNET_RAIPUR in
+ password cisco
+ login
+!
+!
+!
+end
+
+
+Raipur_R2#sh run
+Building configuration...
+
+Current configuration : 1836 bytes
+!
+version 15.4
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Raipur_R2
+!
+!
+!
+!
+!
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 83.0.9.1 255.255.255.224
+!
+interface GigabitEthernet0/0/0
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface GigabitEthernet0/0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface GigabitEthernet0/0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Serial0/1/0
+ bandwidth 512
+ ip address 83.0.9.82 255.255.255.252
+ ip nat inside
+ clock rate 2000000
+!
+interface Serial0/1/1
+ ip address 201.45.38.1 255.255.255.252
+ ip nat outside
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ log-adjacency-changes
+ network 83.0.9.0 0.0.0.31 area 0
+ network 83.0.9.80 0.0.0.3 area 0
+ default-information originate
+!
+ip nat pool VLAN1 141.12.2.171 141.12.2.254 netmask 255.255.255.0
+ip nat pool VLANXXX 141.12.2.1 141.12.2.85 netmask 255.255.255.0
+ip nat pool VLANYYY 141.12.2.86 141.12.2.170 netmask 255.255.255.0
+ip nat inside source list ACLVLAN1 pool VLAN1
+ip nat inside source list ACLVLANXXX pool VLANXXX
+ip nat inside source list ACLVLANYYY pool VLANYYY
+ip classless
+ip route 0.0.0.0 0.0.0.0 Serial0/1/1 
+!
+ip flow-export version 9
+!
+!
+ip access-list standard TELNET_RAIPUR
+ deny 83.0.0.0 0.0.7.255
+ permit any
+ip access-list extended ACLVLAN386
+ permit ip 83.0.0.0 0.0.7.255 any
+ip access-list extended ACLVLAN868
+ permit ip 83.0.9.32 0.0.0.31 any
+ip access-list extended ACLVLAN1
+ permit ip 83.0.9.64 0.0.0.15 any
+!
+banner motd ^C ************
+*******Prajeet Sridhar 105338683*******^C
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ access-class TELNET_RAIPUR in
+ password cisco
+ login
+!
+!
+!
+end
+
+
+Raipur_R2#

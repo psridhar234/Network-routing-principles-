@@ -1,0 +1,144 @@
+Building configuration...
+
+Current configuration : 2369 bytes
+!
+version 15.4
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Korba_R1
+!
+!
+!
+!
+ip dhcp excluded-address 83.0.9.33 83.0.9.35
+ip dhcp excluded-address 83.0.0.1 83.0.0.3
+!
+ip dhcp pool VLAN386
+ network 83.0.0.0 255.255.248.0
+ default-router 83.0.0.1
+ip dhcp pool VLAN868
+ network 83.0.9.32 255.255.255.224
+ default-router 83.0.9.33
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0/0
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface GigabitEthernet0/0/1
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0/1.1
+ description connection to Management vlan
+ encapsulation dot1Q 1 native
+ ip address 83.0.9.65 255.255.255.240
+!
+interface GigabitEthernet0/0/1.195
+ description connection to Grey Vlan
+ encapsulation dot1Q 195
+ ip address 83.0.8.1 255.255.255.0
+!
+interface GigabitEthernet0/0/1.386
+ description connection to Green Vlan
+ encapsulation dot1Q 386
+ ip address 83.0.0.1 255.255.248.0
+ ip access-group ACLVLAN386 in
+!
+interface GigabitEthernet0/0/1.868
+ description connection to Blue vlan
+ encapsulation dot1Q 868
+ ip address 83.0.9.33 255.255.255.224
+!
+interface GigabitEthernet0/0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Serial0/1/0
+ bandwidth 512
+ ip address 83.0.9.81 255.255.255.252
+!
+interface Serial0/1/1
+ no ip address
+ clock rate 2000000
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ log-adjacency-changes
+ passive-interface default
+ no passive-interface Serial0/1/0
+ network 83.0.0.0 0.0.7.255 area 0
+ network 83.0.8.0 0.0.0.255 area 0
+ network 83.0.9.32 0.0.0.31 area 0
+ network 83.0.9.64 0.0.0.15 area 0
+ network 83.0.9.80 0.0.0.3 area 0
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+ip access-list standard TELNET_KORBA
+ permit 83.0.0.0 0.0.7.255
+ deny any
+ip access-list extended ACLVLAN386
+ permit tcp 83.0.0.0 0.0.7.255 148.33.0.0 0.0.255.255 eq www
+ deny ip 83.0.0.0 0.0.7.255 148.33.0.0 0.0.255.255
+ permit icmp 83.0.0.0 0.0.7.255 83.0.9.32 0.0.0.31 echo-reply
+ deny icmp 83.0.0.0 0.0.7.255 83.0.9.32 0.0.0.31
+ permit ip any any
+!
+banner motd ^C **********
+*******Prajeet Sridhar 105338683 Tuesday 8.30**********^C
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ access-class TELNET_KORBA in
+ password cisco
+ login
+!
+!
+!
+end
+
+
+Korba_R1#
